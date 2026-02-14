@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picklyone | The Token Wholesale Hub</title>
+    <title>Picklyone | AI Infrastructure & Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
@@ -24,45 +24,23 @@
             pointer-events: none;
         }
 
-        /* --- Logo 核心黑科技：CSS 遮罩去黑底 --- */
-        /* 
-           原理：将 logo.png 用作遮罩 (mask)。
-           图片中白色的部分（文字、图标）会被保留。
-           图片中黑色的部分（背景）会被完全变透明。
-           然后，我们将一个纯白色和绿色的背景填充到这个遮罩里。
-        */
-        .logo-mask-container {
-            /* 设置 Logo 的尺寸 */
-            width: 200px; 
-            height: 100px;
+        /* --- Logo 核心黑科技：终极去黑底方案 --- */
+        .logo-blend { 
+            /* 1. screen 模式滤掉大部分黑色 */
+            mix-blend-mode: screen; 
+            /* 2. 关键！极大提高对比度，把深灰色彻底压成纯黑，让 screen 过滤得更干净 */
+            /* 3. brightness 稍微提亮，让白色和绿色更显眼 */
+            /* 4. drop-shadow 添加发光 */
+            filter: contrast(200%) brightness(1.2) drop-shadow(0 0 15px rgba(74, 222, 128, 0.4));
             
-            /* 使用你的 logo.png 作为遮罩源 */
-            -webkit-mask-image: url('logo.png');
-            mask-image: url('logo.png');
-            
-            /* 确保遮罩不重复，并居中显示，保持原有比例 */
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-            -webkit-mask-position: center;
-            mask-position: center;
-            -webkit-mask-size: contain;
-            mask-size: contain;
-
-            /* 
-               背景色填充：
-               这决定了 Logo 的最终颜色。
-               我们用一个线性渐变，让图标的绿色部分和文字的白色部分都能显现出来。
-            */
-            background: linear-gradient(to right, var(--brand-green) 30%, #ffffff 60%);
-            
-            /* 添加发光效果，增加立体感 */
-            filter: drop-shadow(0 0 15px rgba(74, 222, 128, 0.4));
-            transition: filter 0.3s ease;
+            display: block;
+            /* 确保图片按比例缩放，不拉伸 */
+            object-fit: contain;
+            transition: transform 0.3s ease, filter 0.3s ease;
         }
-        
-        /* 鼠标悬停增强发光 */
-        .logo-mask-container:hover {
-            filter: drop-shadow(0 0 25px rgba(74, 222, 128, 0.6));
+        .logo-blend:hover {
+             transform: scale(1.02);
+             filter: contrast(200%) brightness(1.3) drop-shadow(0 0 25px rgba(74, 222, 128, 0.6));
         }
 
         /* --- 其他样式 --- */
@@ -83,25 +61,22 @@
 </head>
 <body class="flex flex-col min-h-screen p-6 relative">
 
-    <!-- 背景光效 -->
     <div class="glow-mesh"></div>
 
-    <!-- Logo 区域：现在位于左上角 -->
-    <header class="absolute top-6 left-6 md:top-10 md:left-10 z-20">
-        <!-- 使用 div 替代 img，通过 CSS 遮罩来显示 Logo -->
-        <div class="logo-mask-container"></div>
+    <!-- Logo 区域：左上角，使用 img 标签 -->
+    <header class="absolute top-6 left-6 md:top-8 md:left-8 z-20">
+        <!-- 调整了宽度 w-48 (192px) 和 w-64 (256px)，你可以继续调整这个值来改变大小 -->
+        <img src="logo.png" alt="Picklyone" class="w-48 md:w-64logo-blend">
     </header>
 
-    <!-- 主体内容区域：居中显示 -->
+    <!-- 主体内容区域 -->
     <main id="main-content" class="flex-grow flex flex-col items-center justify-center max-w-4xl w-full mx-auto text-center z-10 mt-20 md:mt-0">
-        <!-- 文案区域 -->
         <div class="space-y-6 md:space-y-8 mb-16 md:mb-20">
             <p id="slogan" class="text-[10px] md:text-xs text-green-400 font-bold tracking-[0.5em] uppercase opacity-80"></p>
             <h1 id="headline" class="text-4xl md:text-7xl font-extralight tracking-tighter text-gradient leading-tight"></h1>
             <p id="description" class="text-gray-500 text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed"></p>
         </div>
 
-        <!-- 注册按钮区域 -->
         <div class="glass-card rounded-[2.5rem] p-8 max-w-sm mx-auto w-full">
             <p id="status-text" class="text-[10px] text-gray-500 tracking-[0.3em] uppercase mb-6"></p>
             <a href="mailto:contact@picklyone.com" class="block w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl hover:bg-green-400 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(74,222,128,0.3)]">
@@ -111,25 +86,25 @@
     </main>
 
     <footer class="absolute bottom-6 w-full text-center text-[9px] text-gray-700 tracking-[0.3em] uppercase">
-        &copy; 2026 Picklyone &bull; Infrastructure for Intelligence
+        &copy; 2026 Picklyone &bull; AI Infrastructure & Solutions
     </footer>
 
     <script>
-        // 多语言配置
+        // --- 商业模式文案更新 ---
         const translations = {
             'CN': {
-                slogan: "下一代 AI Token 集成商",
-                headline: "聚合全球算力<br>批发顶级智能",
-                desc: "专为开发者打造的 AI Token 枢纽。通过单一 API 接入 GPT-4, Claude 3.5 等核心模型，享受批发级定价与金融级稳定性。",
-                btn: "开启开发者合作",
-                status: "内测阶段：限时开放申请"
+                slogan: "一站式 AI 基础设施与解决方案",
+                headline: "不只是 API 批发<br>更是你的 AI 加速器",
+                desc: "除了提供 GPT-4o、Claude 3.5 等顶级模型API的批发价，我们更提供 DeepSeek（大龙虾）等前沿模型的本地部署指南、视频生成工作流优化等全方位增值服务。",
+                btn: "获取解决方案与报价",
+                status: "内测阶段：解决方案咨询开放中"
             },
             'DEFAULT': {
-                slogan: "Next-Gen AI Token Wholesaler",
-                headline: "One API.<br>Wholesale Intelligence.",
-                desc: "The professional hub for AI developers. Access leading LLMs through a single gateway with wholesale pricing and enterprise stability.",
-                btn: "Apply for Early Access",
-                status: "Internal Testing Active"
+                slogan: "One-Stop AI Infrastructure & Solutions",
+                headline: "Beyond API Wholesale.<br>Your AI Accelerator.",
+                desc: "We provide wholesale access to top-tier LLMs like GPT-4o and Claude 3.5, PLUS value-added services including DeepSeek local deployment guides, video generation workflow optimization, and more.",
+                btn: "Get Solutions & Pricing",
+                status: "Internal Testing: Solution Consultations Open"
             }
         };
 
@@ -137,7 +112,6 @@
             const mainContent = document.getElementById('main-content');
             let langData = translations['DEFAULT'];
             const timeout = new Promise(resolve => setTimeout(resolve, 1500));
-
             try {
                 const fetchIP = fetch('https://ipapi.co/json/').then(res => res.json());
                 const data = await Promise.race([fetchIP, timeout]);
