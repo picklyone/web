@@ -3,100 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picklyone | Coming Soon</title>
+    <title>Picklyone | The Token Wholesale Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入高级感字体 Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #050505; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        
-        /* 核心修改：Logo 混合模式与外发光 */
+        :root { --brand-green: #4ADE80; }
+        body { 
+            background-color: #020202; color: #ffffff; 
+            font-family: 'Inter', -apple-system, sans-serif;
+            overflow-x: hidden; margin: 0;
+        }
+
+        /* 动态氛围光：营造 AI 算力的深邃感 */
+        .glow-mesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(74, 222, 128, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(20, 184, 166, 0.05) 0%, transparent 50%);
+        }
+
+        /* Logo 核心处理：滤黑 + 发光 */
         .logo-blend { 
             mix-blend-mode: screen; 
-            /* brightness 提升亮度，drop-shadow 营造白色微光立体感 */
-            filter: brightness(1.1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.15));
-            transition: filter 0.3s ease;
+            filter: brightness(1.1) drop-shadow(0 0 20px rgba(74, 222, 128, 0.4));
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .logo-blend:hover { filter: brightness(1.2) drop-shadow(0 0 35px rgba(74, 222, 128, 0.6)); transform: scale(1.02); }
 
-        /* 悬停效果：增强发光感 */
-        .logo-blend:hover {
-            filter: brightness(1.2) drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
-        }
-
+        /* 极简边框流光效果 */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative; overflow: hidden;
         }
+        .glass-card::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(74, 222, 128, 0.1), transparent 30%);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* 文字渐变提升质感 */
+        .text-gradient {
+            background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.6) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* 初始隐藏内容，防止语言切换时的“文字跳动” */
+        .content-hidden { opacity: 0; transform: translateY(10px); transition: all 0.8s ease; }
+        .content-visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-6 text-center overflow-hidden">
-    
-    <div class="fixed top-0 left-0 w-full h-full -z-10">
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-green-900/10 rounded-full blur-[120px]"></div>
-    </div>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
 
-    <div class="max-w-2xl w-full">
-        <div class="mb-12 flex justify-center">
-            <!-- 修改点：保持 logo-blend 类名 -->
-            <img src="logo.png" alt="Picklyone Logo" class="h-28 md:h-36 logo-blend object-contain">
+    <div class="glow-mesh"></div>
+
+    <main id="main-content" class="max-w-4xl w-full text-center z-10 content-hidden">
+        <!-- Logo 区域 -->
+        <div class="mb-16">
+            <img src="image.png" alt="Picklyone" class="h-24 md:h-28 logo-blend mx-auto">
         </div>
 
-        <p id="slogan" class="text-sm md:text-base text-gray-400 mb-8 tracking-[0.3em] uppercase opacity-80">
-            Smart Integration. Simplified.
-        </p>
-
-        <div class="w-12 h-[1px] bg-green-500/50 mx-auto mb-12"></div>
-
-        <div class="space-y-6 mb-12">
-            <h2 id="headline" class="text-2xl md:text-3xl font-light tracking-tight text-white">
-                The future of intelligence is coming.
-            </h2>
-            <p id="description" class="text-gray-400 text-base md:text-lg leading-relaxed max-w-md mx-auto">
-                Join our exclusive waitlist to experience the next generation of seamless integration.
-            </p>
+        <!-- 文案区域 -->
+        <div class="space-y-8 mb-16">
+            <p id="slogan" class="text-[10px] md:text-xs text-green-400 font-bold tracking-[0.5em] uppercase opacity-80"></p>
+            <h1 id="headline" class="text-5xl md:text-7xl font-extralight tracking-tighter text-gradient leading-tight"></h1>
+            <p id="description" class="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed"></p>
         </div>
-        
-        <div class="glass-card rounded-2xl p-8 max-w-sm mx-auto">
-            <p id="status-text" class="text-xs text-green-500 tracking-widest uppercase mb-4">Phase 1: Pre-registration</p>
-            <a href="mailto:contact@picklyone.com" class="inline-block w-full py-3 px-6 bg-white text-black font-semibold rounded-lg hover:bg-green-400 transition-colors duration-300">
-                Notify Me
-            </a>
-        </div>
-    </div>
 
-    <footer class="fixed bottom-8 text-[10px] text-gray-600 tracking-[0.2em] uppercase">
-        &copy; 2026 Picklyone. All rights reserved.
+        <!-- 注册区域 -->
+        <div class="glass-card rounded-[2.5rem] p-[2px] max-w-sm mx-auto">
+            <div class="bg-[#050505] rounded-[2.4rem] p-8 relative z-10">
+                <p id="status-text" class="text-[10px] text-gray-500 tracking-[0.3em] uppercase mb-6"></p>
+                <a href="mailto:contact@picklyone.com" class="block w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl hover:bg-green-400 transition-all duration-500 shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(74,222,128,0.3)]">
+                    <span id="btn-text"></span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="fixed bottom-8 text-[9px] text-gray-700 tracking-[0.3em] uppercase">
+        &copy; 2026 Picklyone &bull; Infrastructure for Intelligence
     </footer>
 
     <script>
-        const content = {
+        // 1. 语言配置字典
+        const translations = {
             'CN': {
-                slogan: "智能集成 · 极简体验",
-                headline: "重塑智能集成的未来",
-                desc: "加入我们的预约名单，抢先体验下一代无缝集成平台。",
-                btn: "立即订阅更新",
-                status: "第一阶段：预注册开放中"
+                slogan: "下一代 AI Token 集成商",
+                headline: "聚合算力<br>批发全球智能",
+                desc: "专为开发者打造的 AI Token 枢纽。通过单一 API 接入所有顶尖大模型，享受批发级定价与金融级稳定性。",
+                btn: "申请合作伙伴内测",
+                status: "公测预约排队中"
             },
             'DEFAULT': {
-                slogan: "Smart Integration. Simplified.",
-                headline: "The future of intelligence is coming.",
-                desc: "Join our exclusive waitlist to experience the next generation of seamless integration.",
-                btn: "Notify Me",
-                status: "Phase 1: Pre-registration"
+                slogan: "Next-Gen AI Token Wholesaler",
+                headline: "One API.<br>Wholesale Intelligence.",
+                desc: "The professional hub for AI developers. Access all leading LLMs through a single gateway with wholesale pricing and rock-solid reliability.",
+                btn: "Apply for Early Access",
+                status: "Pre-registration Active"
             }
         };
-        async function init() {
+
+        // 2. 核心逻辑：自动识别 IP 并渲染
+        async function initLanguage() {
+            const mainContent = document.getElementById('main-content');
+            let langData = translations['DEFAULT']; // 默认英文
+
             try {
-                const res = await fetch('https://ipapi.co/json/');
-                const data = await res.json();
-                const lang = data.country_code === 'CN' ? content['CN'] : content['DEFAULT'];
-                document.getElementById('slogan').innerText = lang.slogan;
-                document.getElementById('headline').innerText = lang.headline;
-                document.getElementById('description').innerText = lang.desc;
-                document.getElementById('status-text').innerText = lang.status;
-                document.querySelector('a').innerText = lang.btn;
-            } catch (e) { console.log("Defaulting to English"); }
+                // 使用 ipapi.co 获取访问者地理位置
+                const response = await fetch('https://ipapi.co/json/');
+                if (!response.ok) throw new Error('IP API failed');
+                const data = await response.json();
+                
+                // 如果是中国大陆用户（CN），切换到中文配置
+                if (data.country_code === 'CN') {
+                    langData = translations['CN'];
+                }
+            } catch (error) {
+                console.error("Language detection failed, falling back to English.", error);
+            }
+
+            // 3. 填充内容
+            document.getElementById('slogan').innerText = langData.slogan;
+            document.getElementById('headline').innerHTML = langData.headline;
+            document.getElementById('description').innerText = langData.desc;
+            document.getElementById('status-text').innerText = langData.status;
+            document.getElementById('btn-text').innerText = langData.btn;
+
+            // 4. 内容填充完毕后，平滑显示页面（避免闪烁）
+            mainContent.classList.add('content-visible');
         }
-        init();
+
+        window.addEventListener('DOMContentLoaded', initLanguage);
     </script>
 </body>
 </html>
