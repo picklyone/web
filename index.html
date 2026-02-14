@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picklyone | The Token Wholesale Hub</title>
-    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入高级感字体 Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        /* 核心变量与基础设置 */
+        /* --- 基础设置 --- */
         :root { --brand-green: #4ADE80; }
         body { 
             background-color: #020202; color: #ffffff; 
@@ -17,7 +15,7 @@
             margin: 0; overflow-x: hidden;
         }
 
-        /* 动态氛围光背景 */
+        /* --- 动态背景光 --- */
         .glow-mesh {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: 
@@ -26,66 +24,85 @@
             pointer-events: none;
         }
 
-        /* Logo 核心样式：处理发光与融合 */
-        /* 重要：此效果需要图片本身为透明背景 PNG */
-        .logo-blend { 
-            mix-blend-mode: screen; /* 确保亮色发光叠加 */
-            filter: brightness(1.1) drop-shadow(0 0 20px rgba(74, 222, 128, 0.35)); /* 增加发光范围 */
-            display: block;
-            margin: 0 auto;
-            transition: transform 0.3s ease, filter 0.3s ease;
+        /* --- Logo 核心黑科技：CSS 遮罩去黑底 --- */
+        /* 
+           原理：将 logo.png 用作遮罩 (mask)。
+           图片中白色的部分（文字、图标）会被保留。
+           图片中黑色的部分（背景）会被完全变透明。
+           然后，我们将一个纯白色和绿色的背景填充到这个遮罩里。
+        */
+        .logo-mask-container {
+            /* 设置 Logo 的尺寸 */
+            width: 200px; 
+            height: 100px;
+            
+            /* 使用你的 logo.png 作为遮罩源 */
+            -webkit-mask-image: url('logo.png');
+            mask-image: url('logo.png');
+            
+            /* 确保遮罩不重复，并居中显示，保持原有比例 */
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+
+            /* 
+               背景色填充：
+               这决定了 Logo 的最终颜色。
+               我们用一个线性渐变，让图标的绿色部分和文字的白色部分都能显现出来。
+            */
+            background: linear-gradient(to right, var(--brand-green) 30%, #ffffff 60%);
+            
+            /* 添加发光效果，增加立体感 */
+            filter: drop-shadow(0 0 15px rgba(74, 222, 128, 0.4));
+            transition: filter 0.3s ease;
         }
-        /* 鼠标悬停时轻微放大并增强光晕 */
-        .logo-blend:hover {
-             transform: scale(1.02);
-             filter: brightness(1.2) drop-shadow(0 0 30px rgba(74, 222, 128, 0.5));
+        
+        /* 鼠标悬停增强发光 */
+        .logo-mask-container:hover {
+            filter: drop-shadow(0 0 25px rgba(74, 222, 128, 0.6));
         }
 
-        /* 文字渐变效果 */
+        /* --- 其他样式 --- */
         .text-gradient {
             background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.6) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        /* 页面加载时的平滑过渡动画 */
         #main-content { 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
+            opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; 
         }
         #main-content.visible { opacity: 1; transform: translateY(0); }
-
-        /* 玻璃拟态卡片 */
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-6">
+<body class="flex flex-col min-h-screen p-6 relative">
 
     <!-- 背景光效 -->
     <div class="glow-mesh"></div>
 
-    <main id="main-content" class="max-w-4xl w-full text-center z-10">
-        <!-- Logo 区域 -->
-        <div class="mb-16 md:mb-20">
-            <!-- 【修改点】显著增大了 Logo 尺寸 -->
-            <!-- 手机端高度 h-36 (144px), 电脑端高度 h-52 (208px) -->
-            <img src="logo.png" alt="Picklyone" class="h-36 md:h-52 logo-blend mx-auto">
-        </div>
+    <!-- Logo 区域：现在位于左上角 -->
+    <header class="absolute top-6 left-6 md:top-10 md:left-10 z-20">
+        <!-- 使用 div 替代 img，通过 CSS 遮罩来显示 Logo -->
+        <div class="logo-mask-container"></div>
+    </header>
 
+    <!-- 主体内容区域：居中显示 -->
+    <main id="main-content" class="flex-grow flex flex-col items-center justify-center max-w-4xl w-full mx-auto text-center z-10 mt-20 md:mt-0">
         <!-- 文案区域 -->
-        <div class="space-y-6 md:space-y-8 mb-20">
+        <div class="space-y-6 md:space-y-8 mb-16 md:mb-20">
             <p id="slogan" class="text-[10px] md:text-xs text-green-400 font-bold tracking-[0.5em] uppercase opacity-80"></p>
             <h1 id="headline" class="text-4xl md:text-7xl font-extralight tracking-tighter text-gradient leading-tight"></h1>
             <p id="description" class="text-gray-500 text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed"></p>
         </div>
 
         <!-- 注册按钮区域 -->
-        <div class="glass-card rounded-[2.5rem] p-8 max-w-sm mx-auto">
+        <div class="glass-card rounded-[2.5rem] p-8 max-w-sm mx-auto w-full">
             <p id="status-text" class="text-[10px] text-gray-500 tracking-[0.3em] uppercase mb-6"></p>
             <a href="mailto:contact@picklyone.com" class="block w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl hover:bg-green-400 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(74,222,128,0.3)]">
                 <span id="btn-text"></span>
@@ -93,7 +110,7 @@
         </div>
     </main>
 
-    <footer class="fixed bottom-8 text-[9px] text-gray-700 tracking-[0.3em] uppercase">
+    <footer class="absolute bottom-6 w-full text-center text-[9px] text-gray-700 tracking-[0.3em] uppercase">
         &copy; 2026 Picklyone &bull; Infrastructure for Intelligence
     </footer>
 
@@ -118,36 +135,22 @@
 
         async function init() {
             const mainContent = document.getElementById('main-content');
-            let langData = translations['DEFAULT']; // 默认英文
-
-            // 设置超时保护：如果接口 1.5 秒没返回，直接显示默认语言，防止页面白屏
+            let langData = translations['DEFAULT'];
             const timeout = new Promise(resolve => setTimeout(resolve, 1500));
 
             try {
-                // 请求 IP 地址以判断地区
                 const fetchIP = fetch('https://ipapi.co/json/').then(res => res.json());
-                // 使用 Promise.race 比较请求和超时谁更快
                 const data = await Promise.race([fetchIP, timeout]);
+                if (data && data.country_code === 'CN') { langData = translations['CN']; }
+            } catch (e) { console.log("Using default language."); }
 
-                if (data && data.country_code === 'CN') {
-                    langData = translations['CN'];
-                }
-            } catch (e) {
-                console.log("IP detection failed or timed out. Using default language.");
-            }
-
-            // 填充页面内容
             document.getElementById('slogan').innerText = langData.slogan;
             document.getElementById('headline').innerHTML = langData.headline;
             document.getElementById('description').innerText = langData.desc;
             document.getElementById('status-text').innerText = langData.status;
             document.getElementById('btn-text').innerText = langData.btn;
-
-            // 内容填充完毕后，显示页面
             mainContent.classList.add('visible');
         }
-
-        // 页面资源加载完毕后执行初始化
         window.addEventListener('load', init);
     </script>
 </body>
