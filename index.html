@@ -24,28 +24,29 @@
             pointer-events: none;
         }
 
-        /* --- Logo 核心修复：更柔和的去黑底方案 --- */
+        /* --- Logo 修复：使用亮度遮罩去除黑色 --- */
+        .logo-container {
+            background: transparent;
+            position: relative;
+        }
+        
         .logo-blend { 
-            /* 1. 使用 screen 滤掉黑色 */
-            mix-blend-mode: screen; 
-            /* 
-               【核心修改点】
-               移除了过于激进的 contrast(200%)。
-               只保留轻微的亮度和发光，让边缘过渡更自然，消除方框感。
-            */
-            filter: brightness(1.1) drop-shadow(0 0 15px rgba(74, 222, 128, 0.4));
+            /* 核心修复：通过调整混合模式和滤镜组合 */
+            mix-blend-mode: screen;
+            filter: brightness(1.5) contrast(1.3) saturate(1.2) drop-shadow(0 0 20px rgba(74, 222, 128, 0.5));
             
-            /* 额外保障：将图片自身背景设为纯黑，辅助混合模式 */
-            background-color: #000000;
-
+            /* 额外优化：使用 CSS 遮罩增强效果 */
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1));
+            
             display: block;
             object-fit: contain;
             transition: transform 0.3s ease, filter 0.3s ease;
         }
+        
         .logo-blend:hover {
-             transform: scale(1.02);
-             /* 悬停时也移除了高对比度 */
-             filter: brightness(1.2) drop-shadow(0 0 25px rgba(74, 222, 128, 0.6));
+            transform: scale(1.02);
+            filter: brightness(1.8) contrast(1.3) saturate(1.3) drop-shadow(0 0 30px rgba(74, 222, 128, 0.7));
         }
 
         /* --- 其他样式 --- */
@@ -69,8 +70,7 @@
     <div class="glow-mesh"></div>
 
     <!-- Logo 区域：左上角，保持大尺寸 -->
-    <header class="absolute top-6 left-6 md:top-8 md:left-8 z-20">
-        <!-- 保持了较大的宽度设置 w-56 md:w-80 -->
+    <header class="absolute top-6 left-6 md:top-8 md:left-8 z-20 logo-container">
         <img src="logo.png" alt="Picklyone" class="w-56 md:w-80 logo-blend">
     </header>
 
@@ -95,7 +95,7 @@
     </footer>
 
     <script>
-        // --- 商业模式文案 (保持不变) ---
+        // --- 商业模式文案 ---
         const translations = {
             'CN': {
                 slogan: "一站式 AI 基础设施与解决方案",
