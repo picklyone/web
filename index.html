@@ -24,17 +24,12 @@
             pointer-events: none;
         }
 
-        /* --- Logo 核心黑科技：终极去黑底方案 --- */
+        /* --- Logo 核心科技：完美去黑底 + 发光 --- */
         .logo-blend { 
-            /* 1. screen 模式滤掉大部分黑色 */
             mix-blend-mode: screen; 
-            /* 2. 关键！极大提高对比度，把深灰色彻底压成纯黑，让 screen 过滤得更干净 */
-            /* 3. brightness 稍微提亮，让白色和绿色更显眼 */
-            /* 4. drop-shadow 添加发光 */
+            /* 高对比度滤镜，确保黑色背景被过滤干净 */
             filter: contrast(200%) brightness(1.2) drop-shadow(0 0 15px rgba(74, 222, 128, 0.4));
-            
             display: block;
-            /* 确保图片按比例缩放，不拉伸 */
             object-fit: contain;
             transition: transform 0.3s ease, filter 0.3s ease;
         }
@@ -63,20 +58,24 @@
 
     <div class="glow-mesh"></div>
 
-    <!-- Logo 区域：左上角，使用 img 标签 -->
+    <!-- Logo 区域：左上角 -->
     <header class="absolute top-6 left-6 md:top-8 md:left-8 z-20">
-        <!-- 调整了宽度 w-48 (192px) 和 w-64 (256px)，你可以继续调整这个值来改变大小 -->
-        <img src="logo.png" alt="Picklyone" class="w-48 md:w-64logo-blend">
+        <!-- 【修改点】增大了 Logo 的宽度类名：w-56 (手机) md:w-80 (电脑) -->
+        <img src="logo.png" alt="Picklyone" class="w-56 md:w-80 logo-blend">
     </header>
 
     <!-- 主体内容区域 -->
-    <main id="main-content" class="flex-grow flex flex-col items-center justify-center max-w-4xl w-full mx-auto text-center z-10 mt-20 md:mt-0">
+    <main id="main-content" class="flex-grow flex flex-col items-center justify-center max-w-4xl w-full mx-auto text-center z-10 mt-24 md:mt-0">
         <div class="space-y-6 md:space-y-8 mb-16 md:mb-20">
+            <!-- Slogan 标语 -->
             <p id="slogan" class="text-[10px] md:text-xs text-green-400 font-bold tracking-[0.5em] uppercase opacity-80"></p>
+            <!-- 主标题 -->
             <h1 id="headline" class="text-4xl md:text-7xl font-extralight tracking-tighter text-gradient leading-tight"></h1>
+            <!-- 描述文案 -->
             <p id="description" class="text-gray-500 text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed"></p>
         </div>
 
+        <!-- 按钮卡片 -->
         <div class="glass-card rounded-[2.5rem] p-8 max-w-sm mx-auto w-full">
             <p id="status-text" class="text-[10px] text-gray-500 tracking-[0.3em] uppercase mb-6"></p>
             <a href="mailto:contact@picklyone.com" class="block w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl hover:bg-green-400 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(74,222,128,0.3)]">
@@ -90,12 +89,13 @@
     </footer>
 
     <script>
-        // --- 商业模式文案更新 ---
+        // --- 商业模式文案更新 (中英文双语) ---
         const translations = {
             'CN': {
                 slogan: "一站式 AI 基础设施与解决方案",
-                headline: "不只是 API 批发<br>更是你的 AI 加速器",
-                desc: "除了提供 GPT-4o、Claude 3.5 等顶级模型API的批发价，我们更提供 DeepSeek（大龙虾）等前沿模型的本地部署指南、视频生成工作流优化等全方位增值服务。",
+                headline: "不只是 API 批发<br>更是您的 AI 加速器",
+                // 【修改点】优化了中文描述，使其更具专业感和吸引力
+                desc: "提供 GPT-4o, Claude 3.5 等顶级模型的批发级稳定接入。更附赠 DeepSeek 本地部署、视频生成工作流等专家级落地指南，加速您的 AI 业务构建。",
                 btn: "获取解决方案与报价",
                 status: "内测阶段：解决方案咨询开放中"
             },
@@ -113,16 +113,19 @@
             let langData = translations['DEFAULT'];
             const timeout = new Promise(resolve => setTimeout(resolve, 1500));
             try {
+                // 自动识别 IP 切换语言
                 const fetchIP = fetch('https://ipapi.co/json/').then(res => res.json());
                 const data = await Promise.race([fetchIP, timeout]);
                 if (data && data.country_code === 'CN') { langData = translations['CN']; }
             } catch (e) { console.log("Using default language."); }
 
+            // 填充内容
             document.getElementById('slogan').innerText = langData.slogan;
             document.getElementById('headline').innerHTML = langData.headline;
             document.getElementById('description').innerText = langData.desc;
             document.getElementById('status-text').innerText = langData.status;
             document.getElementById('btn-text').innerText = langData.btn;
+            // 平滑显示页面
             mainContent.classList.add('visible');
         }
         window.addEventListener('load', init);
