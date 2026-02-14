@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picklyone | Coming Soon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000000; color: #ffffff; font-family: sans-serif; overflow: hidden; }
+        .logo-glow { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2)); }
+        /* 简单的背景动效 */
+        .bg-gradient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6 text-center">
+    <div class="bg-gradient"></div>
+    
+    <div class="max-w-2xl w-full">
+        <div class="mb-10 flex justify-center">
+            <img src="logo.png" alt="Picklyone Logo" class="h-32 md:h-40 logo-glow object-contain">
+        </div>
+
+        <p id="slogan" class="text-lg md:text-xl text-gray-400 mb-10 font-light tracking-[0.2em] uppercase transition-opacity duration-500">
+            Smart Integration. Simplified.
+        </p>
+
+        <div class="w-16 h-1 bg-white mx-auto mb-12 opacity-20"></div>
+
+        <div class="space-y-6">
+            <p id="description" class="text-gray-300 text-lg leading-relaxed transition-opacity duration-500">
+                We are reshaping the future of smart integration.<br>
+                Join our pre-registration for exclusive early access.
+            </p>
+            
+            <div id="tally-form" class="mt-10 min-h-[120px] bg-white/5 border border-white/10 rounded-2xl p-8 flex items-center justify-center">
+                <p id="loading-text" class="text-gray-500 italic text-sm">Connecting to secure server...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-8 text-gray-600 text-xs tracking-widest uppercase">
+        &copy; 2026 Picklyone. Built for the future.
+    </footer>
+
+    <script>
+        // 语言配置表
+        const langMap = {
+            'CN': {
+                slogan: "智能集成 · 极简体验",
+                desc: "我们正在重塑智能集成的未来。<br>加入预注册名单，获取首批抢先体验资格。",
+                loading: "正在连接安全注册通道..."
+            },
+            'DEFAULT': {
+                slogan: "Smart Integration. Simplified.",
+                desc: "We are reshaping the future of smart integration.<br>Join our pre-registration for exclusive early access.",
+                loading: "Connecting to secure server..."
+            }
+        };
+
+        async function initLanguage() {
+            try {
+                // 使用内置的 Cloudflare 节点地理位置识别（发布后生效）或备用接口
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const lang = data.country_code === 'CN' ? langMap['CN'] : langMap['DEFAULT'];
+
+                // 更新界面文字
+                document.getElementById('slogan').innerText = lang.slogan;
+                document.getElementById('description').innerHTML = lang.desc;
+                document.getElementById('loading-text').innerText = lang.loading;
+            } catch (e) {
+                console.log("Using default language.");
+            }
+        }
+
+        initLanguage();
+    </script>
+</body>
+</html>
