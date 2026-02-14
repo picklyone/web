@@ -1,12 +1,26 @@
+这是完整的代码。
+
+**请务必注意：** 为了达到完美效果，你上传到仓库覆盖原文件的 `logo.png` **必须是一张背景透明的 PNG 图片**。
+
+如果你上传的图片带有灰色或方格背景，这段代码里的发光效果就会把那个背景框显示出来，非常难看。只要图片是透明的，代码就能让它完美融入并带有高级感的光晕。
+
+我已经在这段代码中将 Logo 的尺寸显著调大了。
+
+### 完整的 HTML 代码 (index.html)
+
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picklyone | The Token Wholesale Hub</title>
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入高级感字体 Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
+        /* 核心变量与基础设置 */
         :root { --brand-green: #4ADE80; }
         body { 
             background-color: #020202; color: #ffffff; 
@@ -14,64 +28,77 @@
             margin: 0; overflow-x: hidden;
         }
 
-        /* 动态背景 */
+        /* 动态氛围光背景 */
         .glow-mesh {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: 
                 radial-gradient(circle at 15% 25%, rgba(74, 222, 128, 0.05) 0%, transparent 40%),
                 radial-gradient(circle at 85% 75%, rgba(20, 184, 166, 0.05) 0%, transparent 40%);
+            pointer-events: none;
         }
 
-        /* Logo 核心修复：确保显示且具有高级感 */
+        /* Logo 核心样式：处理发光与融合 */
+        /* 重要：此效果需要图片本身为透明背景 PNG */
         .logo-blend { 
-            mix-blend-mode: screen; /* 滤掉黑底 */
-            filter: brightness(1.1) drop-shadow(0 0 15px rgba(74, 222, 128, 0.3));
+            mix-blend-mode: screen; /* 确保亮色发光叠加 */
+            filter: brightness(1.1) drop-shadow(0 0 20px rgba(74, 222, 128, 0.35)); /* 增加发光范围 */
             display: block;
             margin: 0 auto;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        /* 鼠标悬停时轻微放大并增强光晕 */
+        .logo-blend:hover {
+             transform: scale(1.02);
+             filter: brightness(1.2) drop-shadow(0 0 30px rgba(74, 222, 128, 0.5));
         }
 
-        /* 渐变文字 */
+        /* 文字渐变效果 */
         .text-gradient {
             background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.6) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* 容器显示逻辑 */
+        /* 页面加载时的平滑过渡动画 */
         #main-content { 
             opacity: 0; 
-            transform: translateY(15px); 
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); 
+            transform: translateY(20px); 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
         }
         #main-content.visible { opacity: 1; transform: translateY(0); }
 
+        /* 玻璃拟态卡片 */
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-6">
 
+    <!-- 背景光效 -->
     <div class="glow-mesh"></div>
 
     <main id="main-content" class="max-w-4xl w-full text-center z-10">
-        <!-- Logo 区域：请确保文件名与此处一致 -->
-        <div class="mb-12 md:mb-16">
-            <img src="logo.png" alt="Picklyone" class="h-20 md:h-28 logo-blend">
+        <!-- Logo 区域 -->
+        <div class="mb-16 md:mb-20">
+            <!-- 【修改点】显著增大了 Logo 尺寸 -->
+            <!-- 手机端高度 h-36 (144px), 电脑端高度 h-52 (208px) -->
+            <img src="logo.png" alt="Picklyone" class="h-36 md:h-52 logo-blend mx-auto">
         </div>
 
         <!-- 文案区域 -->
-        <div class="space-y-6 md:space-y-8 mb-16">
+        <div class="space-y-6 md:space-y-8 mb-20">
             <p id="slogan" class="text-[10px] md:text-xs text-green-400 font-bold tracking-[0.5em] uppercase opacity-80"></p>
             <h1 id="headline" class="text-4xl md:text-7xl font-extralight tracking-tighter text-gradient leading-tight"></h1>
             <p id="description" class="text-gray-500 text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed"></p>
         </div>
 
-        <!-- 注册区域 -->
+        <!-- 注册按钮区域 -->
         <div class="glass-card rounded-[2.5rem] p-8 max-w-sm mx-auto">
             <p id="status-text" class="text-[10px] text-gray-500 tracking-[0.3em] uppercase mb-6"></p>
-            <a href="mailto:contact@picklyone.com" class="block w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl hover:bg-green-400 hover:scale-[1.02] transition-all duration-300 shadow-xl">
+            <a href="mailto:contact@picklyone.com" class="block w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl hover:bg-green-400 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(74,222,128,0.3)]">
                 <span id="btn-text"></span>
             </a>
         </div>
@@ -82,11 +109,12 @@
     </footer>
 
     <script>
+        // 多语言配置
         const translations = {
             'CN': {
                 slogan: "下一代 AI Token 集成商",
                 headline: "聚合全球算力<br>批发顶级智能",
-                desc: "专为开发者打造的 AI Token 枢纽。通过单一 API 接入 GPT-4, Claude 3.5, Gemini 等核心模型，享受批发级定价。",
+                desc: "专为开发者打造的 AI Token 枢纽。通过单一 API 接入 GPT-4, Claude 3.5 等核心模型，享受批发级定价与金融级稳定性。",
                 btn: "开启开发者合作",
                 status: "内测阶段：限时开放申请"
             },
@@ -101,34 +129,38 @@
 
         async function init() {
             const mainContent = document.getElementById('main-content');
-            let langData = translations['DEFAULT'];
+            let langData = translations['DEFAULT']; // 默认英文
 
-            // 强制超时保护：如果接口 1.5 秒没返回，直接显示默认语言，防止白屏
+            // 设置超时保护：如果接口 1.5 秒没返回，直接显示默认语言，防止页面白屏
             const timeout = new Promise(resolve => setTimeout(resolve, 1500));
 
             try {
+                // 请求 IP 地址以判断地区
                 const fetchIP = fetch('https://ipapi.co/json/').then(res => res.json());
+                // 使用 Promise.race 比较请求和超时谁更快
                 const data = await Promise.race([fetchIP, timeout]);
 
                 if (data && data.country_code === 'CN') {
                     langData = translations['CN'];
                 }
             } catch (e) {
-                console.log("Using default language");
+                console.log("IP detection failed or timed out. Using default language.");
             }
 
-            // 填充数据
+            // 填充页面内容
             document.getElementById('slogan').innerText = langData.slogan;
             document.getElementById('headline').innerHTML = langData.headline;
             document.getElementById('description').innerText = langData.desc;
             document.getElementById('status-text').innerText = langData.status;
             document.getElementById('btn-text').innerText = langData.btn;
 
-            // 显示内容
+            // 内容填充完毕后，显示页面
             mainContent.classList.add('visible');
         }
 
+        // 页面资源加载完毕后执行初始化
         window.addEventListener('load', init);
     </script>
 </body>
 </html>
+```
